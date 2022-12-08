@@ -5,6 +5,7 @@ console.group('operacionesCuadrado')
 const lado = 5;
 
 console.log('hola');
+
 function calcularCuadrado(lado) {
     return{
         perimetro: lado * 4,
@@ -16,24 +17,55 @@ console.groupEnd('operacionesCuadrado')
 // Calculos triangulo
 
 console.group('operacionesTriangulo')
-console.log('hola');
 
-const lado1 = 3;
-const lado2 = 4;
-const ladoBase = 5;
-const altura = 4;
+let lado1;
+let lado2;
+let ladoBase;
+let altura;
 
 function calcularTriangulo(lado1, lado2, ladoBase, altura) {
     return{
-        perimetro: lado1 + lado2 + ladoBase + altura,
+        perimetro: lado1 + lado2 + ladoBase + altura ,
         area: (ladoBase * altura) / 2
     };
 }
+
 
 const resultados = calcularTriangulo();
 console.log(resultados);
 
 console.groupEnd('operacionesTriangulo')
+
+// Triangulo escaleno
+
+console.group('Triangulo Escaleno')
+
+console.log('Hola de nuevo')
+
+let lado3;
+
+
+function solution(lado1, lado2, lado3) {
+    if (lado1 != lado2 && lado2 != lado3 && lado3 != lado1) {
+        
+        console.log('Este es un triangulo escaleno');
+
+        let semiperimetro = (lado1 + lado2 + lado3) / 2;
+        let areaTEscaleno = Math.sqrt( semiperimetro * (semiperimetro - lado1) * (semiperimetro - lado2) * (semiperimetro - lado3) )
+        let altura = Math.round( ( 2 * areaTEscaleno ) / lado1 );
+
+        console.log(altura);
+        
+    }
+
+    // a = (b * h) / 2 -> h = (2a) / b  
+    
+    else {        
+        console.warn('This is no a fucking escaleno');
+    }
+}
+
+console.groupEnd('Triangulo Escaleno')
 
 // calculos en el circulo
 
