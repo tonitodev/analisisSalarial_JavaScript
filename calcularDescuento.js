@@ -54,79 +54,59 @@ function calculateDiscount(){
 
 
 const coupons = [
-    { coupon: 'tonitoDev1' , discount: 10 },
-    { coupon: 'tonitoDev2' , discount: 15 },
-    { coupon: 'tonitoDev3' , discount: 20 },
-    { coupon: 'tonitoDev4' , discount: 25 },
-    { coupon: 'tonitoDev5' , discount: 30 },
+    { discountCode: 'tonitoDev1' , discount: 10 },
+    { discountCode: 'tonitoDev2' , discount: 15 },
+    { discountCode: 'tonitoDev3' , discount: 20 },
+    { discountCode: 'tonitoDev4' , discount: 25 },
+    { discountCode: 'tonitoDev5' , discount: 30 },
 ];
 
 
-let cuponBuscado;
-let codigoEncontrado;
+let discountCoupon;
+let validatedCoupon;
 let certifiedCoupon
 
 
-/*This funtion traverse the coupons array by .some to identify if the coupon input already exist and if it does get it by .find to obtain
-the discount value*/
-
-function findCoupon(){
-
-    cuponBuscado = discountCoupon_value.value;
-
-
-    certifiedCoupon = coupons.some(function(coupon){
-        return coupon.coupon === cuponBuscado;
-    }); 
-
-
-    if(certifiedCoupon == true) {
-
-        codigoEncontrado = coupons.find(function(coupon){
-            return(coupon.coupon === cuponBuscado);
-        });
-        
-        console.log('El descuento a aplicar es del: ' + codigoEncontrado.discount + '%');
-        
-        return;
-        
-    }
-}
-
-/*Calculate discount Code Input*/
-
-calcDiscByCoupon_btn.addEventListener('click', applyDiscount);
-
-/* This function validate if the form is fully filles (true)-> excecute findCoupon; Then prints 1 of 3 cases: 
+/* This function validate if the form is fully filles (true)-> excecute applyDiscountByCoupon; Then prints 1 of 3 cases: 
 1- Form is not fully filled
 2- Coupon on the input doesn't exist in our array
 3- The coupon exists and the discount is applied correctly */
 
-function applyDiscount(){
-    
+
+
+function applyDiscountByCoupon(){
+   
     price = Number(price2_value.value);
-    cuponBuscado = discountCoupon_value.value;
+    discountCoupon = discountCoupon_value.value;
 
-
-    if (!price || !cuponBuscado) {
+    if (!price || !discountCoupon) {  //Form is fully filled?
 
         console.warn('¡Hey! Por favor llena el formulario 😘');
         printDiscountbyCoupon.innerText = '¡Hey! Por favor llena el formulario 😘';
         return;
 
     }
+
+
+
+    validatedCoupon = coupons.find(browseCouponAtList); //Is coupon at coupons list
+    
+    function browseCouponAtList (coupon) {
+        return(coupon.discountCode === discountCoupon);
+    }
     
 
-    findCoupon();
 
-
-    if (certifiedCoupon == true) {
-    
-        const newPriceCoupon = price * (100 - codigoEncontrado.discount) / 100 ;
+    if(validatedCoupon) {
         
+        console.log('El descuento a aplicar es del: ' + validatedCoupon.discount + '%');
+
+        let newPriceCoupon = price * (100 - validatedCoupon.discount) / 100 ;
         console.log('El precio con descuento es de $' + newPriceCoupon);
 
         printDiscountbyCoupon.innerText = ('El precio con descuento es de $' + newPriceCoupon);
+        
+        return;
         
     } else {
 
@@ -134,6 +114,9 @@ function applyDiscount(){
         printDiscountbyCoupon.innerText = ('Ojito, este cupon no existe. No se puede aplicar descuento 😥');
     
     }
+}
 
-};
+/*Calculate discount Code Input*/
+
+calcDiscByCoupon_btn.addEventListener('click', applyDiscountByCoupon);
 
