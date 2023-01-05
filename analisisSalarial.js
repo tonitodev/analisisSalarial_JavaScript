@@ -1,4 +1,7 @@
-// Analaisis Personal para Juanita
+// Salary analysis by person
+
+// Find a specific person and obtain a salary-array to work with
+
 
 function findPerson (personToBrowse){
     return salarios.find (person => person.name == personToBrowse);
@@ -8,6 +11,7 @@ function extractSalaries (trabajos){
     return trabajos.map ( personJobs => personJobs.salario )
 }
 
+// Calculate an average and median
 
 function promedioByPerson (personName) {
     const trabajos = findPerson(personName).trabajos;
@@ -39,7 +43,11 @@ function medianaByPerson (personName){
     
 }
 
+// Salary projection to suggest wich salary the person will earn based on its sallary trending
+
 function salaryProjection (personName) {
+
+    // findPerson() and extractSallaries() were executed to get a sallary Array / console.log's as a checkpoints
     const trabajos = findPerson(personName).trabajos;
     console.log('Los trabajos que ha tenido esa persona son:');
     console.log(trabajos);
@@ -48,7 +56,10 @@ function salaryProjection (personName) {
     console.log('Los salarios que ha tenido esa persona son:');
     console.log(salaryByJobs);
 
-    function salaryGrowth (salaryByJobs) {
+
+    // SalaryGrowth will analize Salaries-growthDeltas
+
+    function salaryGrowth (salaryByJobs) { // Create a new array to keep salary growth in % by .map()
         const allSalaries = salaryByJobs;
         let salaryGrowthPercent = [];
         
@@ -62,7 +73,7 @@ function salaryProjection (personName) {
             return percentGrowth;
         });
         
-        growthRecord[0] = 0;
+        growthRecord[0] = 0; // First array element setted as 0 because it is the first sallary... so there is no parameter to compare growth
 
         return salaryGrowthPercent = growthRecord; 
     }
@@ -71,11 +82,11 @@ function salaryProjection (personName) {
     const growht = salaryGrowth(salaryByJobs);
     console.log(growht);
 
-    const mediaGrowth = calculoPromedio(growht);
+    const mediaGrowth = calculoPromedio(growht); // Percentage of growth averge calculated (from calculoPromedio() at promedio.js) to improve the trend's accuray
     console.log('La mediana de crecimiento salarial de:');
     console.log(mediaGrowth + '%');
     
-    const nextSalary = Math.round(salaryByJobs[salaryByJobs.length - 1] * ( 1 + (mediaGrowth/100)));
+    const nextSalary = Math.round(salaryByJobs[salaryByJobs.length - 1] * ( 1 + (mediaGrowth/100))); // At the end, a theoretical sallary is proposed.
     console.log('El salario recomendado para tu próximo empleo es:');
     console.log(nextSalary);
 
