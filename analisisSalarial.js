@@ -61,7 +61,6 @@ function salaryProjection (personName) {
 
     function salaryGrowth (salaryByJobs) { // Create a new array to keep salary growth in % by .map()
         const allSalaries = salaryByJobs;
-        let salaryGrowthPercent = [];
         
         const growthRecord = allSalaries.map((salario, jobNumber) => {
 
@@ -117,8 +116,72 @@ function extractSalaryByCompany (workersRecord) {
 
     })
 
-    console.log(companySalaryRecord);
+    // console.log(companySalaryRecord);
 
+}
+
+function calculateMediaSalaryByYear (company, year) {
+
+    extractSalaryByCompany(salarios);
+
+    if (!companySalaryRecord[company]) { console.warn('La empresa no existe en la base de datos');  return;}
+    if (!companySalaryRecord[company][year]) { console.warn('La empresa no reportó salarios en ' + year);  return;}
+    if (companySalaryRecord[company][year]) {
+        
+        const mediaSalarial = calculoPromedio(companySalaryRecord[company][year]);
+        console.log('La media Salarial de ' + company + ' durante el año ' + year + ' fue de: $ ' + mediaSalarial);
+
+    }
+
+}
+
+function salaryGrowth (salaryByJobs) { // Create a new array to keep salary growth in % by .map()
+    const allSalaries = salaryByJobs;
+    
+    const growthRecord = allSalaries.map((salario, jobNumber) => {
+
+        const netGrowth = salario - allSalaries[jobNumber-1];
+        let percentGrowth;
+
+        percentGrowth = Math.round((netGrowth * 100) / allSalaries[jobNumber-1]);
+
+        return percentGrowth;
+    });
+    
+    growthRecord[0] = 0; // First array element setted as 0 because it is the first sallary... so there is no parameter to compare growth
+
+    return salaryGrowthPercent = growthRecord; 
+}
+
+function salaryProjectionByCompany (company) {
+
+    extractSalaryByCompany(salarios);
+
+    if (!companySalaryRecord[company]) { console.warn('La empresa no existe en la base de datos');  return;}
+    
+    if (companySalaryRecord[company]) {
+        
+        const salaryRecordByCompany = companySalaryRecord[company];
+        let salaryRecord = Object.values(salaryRecordByCompany);
+
+        let salaryRecordAvergae = salaryRecord.map ( promedioAnual => {
+           return calculoPromedio(promedioAnual);
+        } )
+
+        const salaryGrowthPercent = salaryGrowth(salaryRecordAvergae);
+
+        const medianaCrecimiento = FuncionesMatematicas.calculoMediana(salaryGrowthPercent);
+
+        const nextSalary = Math.round(salaryRecordAvergae[salaryRecordAvergae.length - 1] * ( 1 + (medianaCrecimiento/100)));
+
+/*         console.log(salaryRecordByCompany);
+        console.log(salaryRecord);
+        console.log(salaryRecordAvergae);
+        console.log(salaryGrowthPercent);
+        console.log(medianaCrecimiento); */
+        console.log('El salario esperado para el próximo año es de:');
+        console.log(nextSalary);
+    }
 }
 
 
