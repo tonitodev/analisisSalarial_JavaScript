@@ -89,6 +89,39 @@ function salaryProjection (personName) {
     const nextSalary = Math.round(salaryByJobs[salaryByJobs.length - 1] * ( 1 + (mediaGrowth/100))); // At the end, a theoretical sallary is proposed.
     console.log('El salario recomendado para tu próximo empleo es:');
     console.log(nextSalary);
-
-    
 }
+
+
+// Institutional sallary analysis
+
+/* function extractSalaries (trabajos){
+    return trabajos.map ( personJobs => personJobs.salario )
+} */
+
+let companySalaryRecord = {};
+
+function extractSalaryByCompany (workersRecord) {
+    
+    
+    workersRecord.map(function(jobByPerson){
+        
+        jobByPerson.trabajos.map(function(companyName){
+
+            if ( !companySalaryRecord[companyName.empresa] ) { companySalaryRecord[companyName.empresa] = {}; }
+
+            if ( !companySalaryRecord[companyName.empresa][companyName.year] ) { companySalaryRecord[companyName.empresa][companyName.year] = []; }
+
+            companySalaryRecord[companyName.empresa][companyName.year].push(companyName.salario);
+
+        });
+
+    })
+
+    console.log(companySalaryRecord);
+
+}
+
+
+
+
+
